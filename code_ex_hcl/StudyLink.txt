@@ -1,0 +1,27 @@
+to-do list for interview
+
+1.	smart_prt implimention (Done)
+2.  coredump analysis
+3.  IPC ( Mutex vs semaphore)
+4.  Mediam Algo revision
+5.  MoreEC++ revision (Refrence based smart_prt implementon) 
+6.  xmake tutorial
+
+
+study link:
+https://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part-1
+https://www.nextptr.com/
+https://cppcodetips.wordpress.com/
+https://www.nextptr.com/tutorial/ta1450413058/unique_ptr-shared_ptr-weak_ptr-or-reference_wrapper-for-class-relationships
+https://www.modernescpp.com/index.php/semaphores-in-c-20
+https://www.aristeia.com/presentations.html  (scott Mayer Page)
+https://www.cppstories.com/
+https://hackernoon.com/
+
+https://tboox.org/2019/05/29/xmake-vs-cmake/
+https://hackernoon.com/c-template-a-quick-review-of-c11141720-version-ipg3uqy
+
+https://blog.ycshao.com/     Effextive C++ blog
+
+
+
