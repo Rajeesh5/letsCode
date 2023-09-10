@@ -1,0 +1,83 @@
+
+@startuml dispatcher
+
+class AbstractRequest {  
+   + int getValue()
+   + void setValue()   
+   + void process()
+   + void finish() 
+}
+
+class Request {
+   
+	+ getValue()
+	+ setValue()  
+	+ setOutput()
+	+ process()
+	+ finish() 
+	- int value
+	- DoCallBack m_callback
+}
+
+class Worker {
+	- condition_variable cv
+	- mutex mtx
+	- unique_lock ulock
+	- AbstractRequest m_pRequest
+	- bool running
+	- bool ready
+
+	+ void run()
+	+ void stop()
+	+ void setRequest()
+	+ void notify()
+    
+}
+
+class Dispatcher {
+	- queue requestQ
+	- queue<Worker*> workerQ
+	- mutex requestQ_mutex;
+	- mutex workerQ_mutex;
+	- vector<Worker*> allWorkers;
+	- vector<std::thread*> threads;
+public:
+	static bool init(int workers);
+	static bool stop();
+	static void addRequest(AbstractRequest* request);
+	static bool addWorker(Worker* worker);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AbstractRequest-->Request
+
+@enduml
