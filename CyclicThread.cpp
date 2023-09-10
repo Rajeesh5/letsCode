@@ -71,17 +71,9 @@ class CyclicThread
     }
 
     ~CyclicThread() {
-        // If StopThread() called before it that menas no impact.
-        // Before joining Checks:
-        // a.   Thread is not running.
-        // b.   Thread object is valid.
-        // c.   still joinable. 
-        if(!m_isRunning && m_pThread && m_pThread->joinable()){
-            m_pThread->join();
-            m_isReady = false;
-            delete m_pThread;
-            m_pThread = nullptr;
-        }
+        StopThread();
+        m_isReady = false;
+
     } 
 
     // Need to check warpper moving behavoiur
@@ -90,8 +82,8 @@ class CyclicThread
 
 private:
 
-    bool m_isReady = false;
-    bool m_isRunning = false;
+    bool m_isReady = false;         // true, means all required parameter intialised 
+    bool m_isRunning = false;       // true, means now thread is running 
     unsigned int m_timeIntervalMS;  // In millisecond
     thread *m_pThread;
     CallBack m_callBack; 
