@@ -18,7 +18,7 @@ int main() {
 
 
 
-	event_manager->registerEvent(event_nm, callback1);
+	event_manager->registerEvent(event_nm, callback1);      // Need to pass topic number
     event_manager->registerEvent(event_nm, callback2);
 
     // { test_event -> [callback1, collback2] }
