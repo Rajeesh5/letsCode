@@ -1,0 +1,65 @@
+
+### Ref::https://docs.conan.io/1/getting_started.html
+### Ref::https://ilyas-hamadouche.medium.com/c-package-management-with-conan-introduction-8c7bd928c009
+
+
+
+> sudo pip3 insatll conan [fiest insatll pip2, if not insatlled] 
+	pip install conan==1.59
+
+
+> conan profile detect [to detect the profile]
+	Saving detected profile to /home/rajeev/.conan2/profiles/default
+	
+
+> create test program has dependency with sqlite, not compiled.
+
+#include <iostream>
+#include <sqlite3.h>
+
+int main() {
+  sqlite3 *db;
+  int rc = sqlite3_open("test.db", &db);
+  if (SQLITE_OK == rc) {
+    std::cout << "Opened database successfully \n";
+    sqlite3_close(db);
+  } else {
+    std::cout << "Can't open database: " << sqlite3_errmsg(db) << "\n";
+  }
+  return 0;
+}
+
+> conan search sqlite3* --remote=conancenter 
+
+> create conanfile.txt AND ADD:
+
+	[requires]
+	sqlite3/3.44.3
+
+	[generators]
+	cmake
+
+> conan inspect sqlite3/3.44.3	
+
+> Here is the cmakeFile
+
+	cmake_minimum_required (VERSION 3.8)
+
+	project(TestConan CXX)
+	set(CMAKE_CXX_STANDARD 14)
+
+	include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+	conan_basic_setup()
+
+	add_executable(testConan test_conan.cpp)
+	target_link_libraries(testConan ${CONAN_LIBS})
+
+
+$ mkdir build && cd build
+$ conan install ..
+$ cmake .. -DCMAKE_BUILD_TYPE=Release
+$ cmake --build .
+
+
+
+
