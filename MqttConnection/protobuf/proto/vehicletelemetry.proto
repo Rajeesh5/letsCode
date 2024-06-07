@@ -1,0 +1,22 @@
+syntax = "proto3";
+package com.bosch.itrams_gen2e;
+option csharp_namespace = "com.bosch.itrams_gen2e";
+option optimize_for = LITE_RUNTIME;
+
+
+import "common.proto";
+
+//
+// [START Telemetry_MessageType_Definition]
+//
+message TelemetryPayload {
+
+	// Collection of telemetry readings
+	// The TCU MUST set this property array with the multiple readings of the telemetry parameters
+	// with one entry for each capture duration (500 milli-seconds).
+	//
+	repeated TelemetryReading measures = 1 [json_name = "measures"];
+}
+//
+// [END Telemetry_MessageType_Definition]
+/////////////////////////////////////////////////////////////

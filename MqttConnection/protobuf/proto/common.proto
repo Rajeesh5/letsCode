@@ -1,0 +1,816 @@
+syntax = "proto3";
+package com.bosch.itrams_gen2e;
+option optimize_for = LITE_RUNTIME;
+
+import "google/protobuf/timestamp.proto"; // Check if this import works in the TARGET!
+// import "timestamp.proto";
+//
+// [START Enumerations_definitions]
+//
+
+enum eOperatingState {
+  normal = 0;
+  closure = 1;
+  offline = 2;
+}
+
+enum eProvisioningState {
+  factory = 0;
+  provisioned = 1;
+  authorized = 2;
+}
+
+enum eTcuMessageType {
+  telemetry = 0;
+  chargingTelemetry = 1;
+  vehicleHealth = 2;
+  diagnostics = 3;
+  alert = 4;
+  vehicleEvent = 5;
+  commandResponse = 6;
+  command = 7;
+  canData = 8;
+  fileUpload = 9;
+  vehicleStateOfHealth = 10;
+  fileUploadRequest = 11;
+  fileUploadResponse = 12;
+  fileUploadStatus = 13;
+  fileUploadAck = 14;
+  request = 15;
+  response = 16;
+  pvgenericCAN = 17;
+  pvdiagnosticCAN = 18;
+  pvDTCCAN = 19;
+}
+
+enum IgnitionOn {
+  ignitionOff = 0;
+  ignitionOn = 1;
+  Reserve31 = 2;
+  Reserve32 = 3;
+  ignitionDefault = 4;
+}
+
+enum CrankOn {
+  crankOff = 0;
+  crankOn = 1;
+  Reserve33 = 2;
+  Reserve34 = 3;
+  crankDefault = 4;
+}
+
+// Steering Direction enumeration defines the direction for the steering wheel.
+// Default is Clockwise.
+// Note that enum values use C++ scoping rules, meaning that enum values are
+// siblings of their type, not children of it. Hence, we prefix enum values to
+// make them unique within the package.
+enum SteeringDirection {
+  SteeringDirectionClockwise = 0;
+  SteeringDirectionAnticlockwise = 1;
+  Reserve107 = 2;
+  Reserver108 = 3;
+  SteeringDirectionDefault = 4;
+}
+
+// EVGearState enumeration defines gear values for display.
+// Default is Neutral.
+// Note that enum values use C++ scoping rules, meaning that enum values are
+// siblings of their type, not children of it. Hence, we prefix enum values to
+// make them unique within the package.
+enum EVGearState {
+  gsdNeutral = 0;
+  gsdSport = 1;
+  gsdReverse = 2;
+  gsdForwardDrive = 3;
+  gsdLosMode = 4;
+  gsdPark = 5;
+  Reserve5 = 6;
+  Reserve6 = 7;
+  gsdDefault = 8;
+}
+
+// VCUPowerMode enumeration defines VCU power modes.
+// Default is regeneration.
+// Note that enum values use C++ scoping rules, meaning that enum values are
+// siblings of their type, not children of it. Hence, we prefix enum values to
+// make them unique within the package.
+enum VCUPowerMode {
+  vpmAwake = 0;
+  vpmActive = 1;
+  vpmCrank = 2;
+  vpmNormalRun = 3;
+  vpmEnergyRecuperation = 4;
+  vpmChargingMode = 5;
+  vpmLimitedPowerMode = 6;
+  reserveVCU1 = 7;
+  reserveVCU2 = 8;
+  vpmDefault = 9;
+}
+
+// GearState enumeration defines gear values.
+// Default is Neutral.
+// Note that enum values use C++ scoping rules, meaning that enum values are
+// siblings of their type, not children of it. Hence, we prefix enum values to
+// make them unique within the package.
+enum GearState {
+  gsNeutral = 0;
+  gsFirstGear = 1;
+  gsSecondGear = 2;
+  gsThirdGear = 3;
+  gsFourthGear = 4;
+  gsFifthGear = 5;
+  gsSixthGear = 6;
+  gsReverseGear = 7;
+  gsSeventhGear = 8;
+  Reserve3 = 9;
+  Reserve4 = 10;
+  gsInvalid = 14;
+  gsFault = 15;
+  gsDefault = 16;
+}
+
+enum BlowerSpeed {
+  gsdSpeed0 = 0;
+  gsdSpeed1 = 1;
+  gsdSpeed2 = 2;
+  gsdSpeed3 = 3;
+  gsdSpeed4 = 4;
+  gsdSpeed5 = 5;
+  gsdSpeed6 = 6;
+  gsdSpeed7 = 7;
+  Reserve13 = 8;
+  Reserve14 = 9;
+  gsdSpeedDefault = 10;
+}
+
+enum VehicleDriveMode {
+  vDriveCity = 0;
+  vDriveSport = 1;
+  vDriveEco = 2;
+  vDriveRough = 3;
+  vDriveGrassSnow = 4;
+  vDriveMudGravel = 5;
+  vDriveSand = 6;
+  vDriveWet = 7;
+  Reserve29 = 8;
+  Reserve30 = 9;
+  vDriveDefault = 10;
+}
+
+enum ClutchState {
+  ClutchNotPressed = 0;
+  ClutchHalfPressed = 1;
+  ClutchFullPressed = 2;
+  Reserve = 3;
+  ClutchStateDefault = 4;
+}
+
+enum AcState {
+  AcOff = 0;
+  AcOn = 1;
+  Reserve105 = 2;
+  Reserve106 = 3;
+  AcStateDefault = 4;
+}
+
+enum GPsFixStatus {
+  GpsNoFix = 0;
+  Gps2dFIx = 1;
+  Gps3dFix = 2;
+  GpsFixStatusDefault = 5;
+}
+
+enum PowerModeState {
+  PreStandBy = 0;
+  Awake = 1;
+  TransportPark = 2;
+  KeyIn = 3;
+  Accessory = 4;
+  AccessoryDelay = 5;
+  Ignition = 6;
+  TransportDrive = 7;
+  Run = 8;
+  Crank = 9;
+  TransportCrank = 10;
+  TransportRun = 11;
+  PowerModeStateDefault = 16;
+}
+
+enum HornState {
+  HornNotActive = 0;
+  HornActive = 1;
+  HornStateDefault = 4;
+}
+
+enum HighBeamLampOnFlag {
+  HighBeamLampOff = 0;
+  HighBeamLampOn = 1;
+  Reserve57 = 2;
+  Reserve58 = 3;
+  HighBeamLampOnDefault = 4;
+}
+
+enum LowBeamLampOnFlag {
+  lowBeamLampOff = 0;
+  lowBeamLampOn = 1;
+  Reserve97 = 2;
+  Reserve98 = 3;
+  lowBeamLampOnDefault = 4;
+}
+
+enum VehicleARmState {
+  VehicleNotArmed = 0;
+  VehicleArmed = 1;
+  VehicleARmStateDefault = 4;
+}
+
+enum CabinCoolingSolValveState {
+  CabinColSvOFF = 0;
+  CabinColSvON = 2;
+  CabinCoolingSolValveStateDefault = 4;
+}
+
+enum AcReqDrvr {
+  AcNotRequested = 0;
+  AcRequested = 1;
+  AcReqDrvrDefault = 4;
+}
+
+enum AcSetTemperature {
+  Ac_LO = 0;
+  Ac_16_Deg_C = 1;
+  Ac_16_5_Deg_C = 2;
+  Ac_17_Deg_C = 3;
+  Ac_17_5_Deg_C = 4;
+  Ac_18_Deg_C = 5;
+  Ac_18_5_Deg_C = 6;
+  Ac_19_Deg_C = 7;
+  Ac_19_5_Deg_C = 8;
+  Ac_20_Deg_C = 9;
+  Ac_20_5_Deg_C = 10;
+  Ac_21_Deg_C = 11;
+  Ac_21_5_Deg_C = 12;
+  Ac_22_Deg_C = 13;
+  Ac_22_5_Deg_C = 14;
+  Ac_23_Deg_C = 15;
+  Ac_23_5_Deg_C = 16;
+  Ac_24_Deg_C = 17;
+  Ac_24_5_Deg_C = 18;
+  Ac_25_Deg_C = 19;
+  Ac_25_5_Deg_C = 20;
+  Ac_26_Deg_C = 21;
+  Ac_26_5_Deg_C = 22;
+  Ac_27_Deg_C = 23;
+  Ac_27_5_Deg_C = 24;
+  Ac_28_Deg_C = 25;
+  Ac_28_5_Deg_C = 26;
+  Ac_29_Deg_C = 27;
+  Ac_29_5_Deg_C = 28;
+  Ac_30_Deg_C = 29;
+  Ac_HI = 30;
+  AcSetTemperatureDefault = 35;
+}
+
+enum BatteryCoolingSolValveState {
+  BatteryColSvOFF = 0;
+  BatteryColSvON = 2;
+  BatteryColSolValveStateDefault = 4;
+}
+
+enum BrakePressState {
+  BrakePressed = 0;
+  BrakeNotPressed = 1;
+  Reserve35 = 2;
+  Reserve36 = 3;
+  BrakeStateDefault = 4;
+}
+
+enum ParkBrakePressStateFlag {
+  ParkBrakeNotPressed = 0;
+  ParkBrakePressed = 1;
+  Reserve85 = 2;
+  Reserve86 = 3;
+  ParkBrakePressStateDefault = 4;
+}
+
+enum DriverSeatBeltFlag {
+  DriverSeatBeltBuckled = 0;
+  DriverSeatBeltUnbuckled = 1;
+  Reserve87 = 2;
+  Reserve88 = 3;
+  DriverSeatBeltDefault = 4;
+}
+
+enum CoDriverSeatBeltFlag {
+  CoDriverSeatBeltBuckled = 0;
+  CoDriverSeatBeltUnbuckled = 1;
+  Reserve89 = 2;
+  Reserve90 = 3;
+  CoDriverSeatBeltDefault = 4;
+}
+
+enum CruiseControlStatus {
+  CruiseDisabled = 0;
+  CruiseEnabledActive = 1;
+  CruiseEnabledInactive = 2;
+  CrusieNotPresent = 3;
+  CruiseControlStatusDefault = 6;
+}
+
+enum DRlState {
+  DRlOff = 0;
+  DRlOn = 1;
+  DRlStateDefault = 4;
+}
+
+enum WiperState {
+  WiperOff = 0;
+  WiperOn = 1;
+  WiperStateDefault = 4;
+}
+
+enum BiFuelMode {
+  Gasoline = 0;
+  CNG = 1;
+  BiFuelModeDefault = 4;
+}
+
+enum AcMode {
+  Manual = 0;
+  Auto = 1;
+  Economy = 2;
+  AcModeDefault = 4;
+}
+
+enum LeftFrontDoorOpenFlag {
+  LeftFrontDoorClosed = 0;
+  LeftFrontDoorOpen = 1;
+  Reserve45 = 2;
+  Reserve46 = 3;
+  LeftFrontDoorOpenDefault = 4;
+}
+
+enum RightFrontDoorOpenFlag {
+  RightFrontDoorClosed = 0;
+  RightFrontDoorOpen = 1;
+  Reserve47 = 2;
+  Reserve48 = 3;
+  RightFrontDoorOpenDefault = 4;
+}
+
+enum LeftRearDoorOpenFlag {
+  LeftRearDoorClosed = 0;
+  LeftRearDoorOpen = 1;
+  Reserve49 = 2;
+  Reserve50 = 3;
+  LeftRearDoorOpenDefault = 4;
+}
+
+enum RightRearDoorOpenFlag {
+  RightRearDoorClosed = 0;
+  RightRearDoorOpen = 1;
+  Reserve51 = 2;
+  Reserve52 = 3;
+  RightRearDoorOpenDefault = 4;
+}
+
+enum TailGateOpenFlag {
+  TailGateClosed = 0;
+  TailGateOpen = 1;
+  Reserve53 = 2;
+  Reserve54 = 3;
+  TailGateOpenDefault = 4;
+}
+
+enum BonnetOpenFlag {
+  BonnetClosed = 0;
+  BonnetOpen = 1;
+  Reserve59 = 2;
+  Reserve60 = 3;
+  BonnetOpenDefault = 4;
+}
+
+//
+// [START Telemetry_Readings_Definition]
+//
+message TelemetryReading {
+  // Timestamp of message creation.
+  // Using Timestamp type from protobuf:
+  // See
+  // https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#timestamp
+  // Timestamp represents point in time independent of any timezone or calendar,
+  // represented as seconds and fractions of seconds at nanosecond resolution in
+  // UTC Epoch time. Range is from 0001-01-01T00:00:00Z to
+  // 9999-12-31T23:59:59.999999999Z. By restricting to that range, we ensure
+  // that we can convert to and from RFC 3339 date strings. See
+  // https://tools.ietf.org/html/rfc3339
+  google.protobuf.Timestamp timestamp = 1 [ json_name = "ts" ];
+
+  // GPS latitude value of the vehicle location in degrees x 10 million.
+  // The value must be multiplied by (10^ -7) to get value in degrees up to 7
+  // decimal places.
+  oneof gpsLatProperty { int32 gpsLat = 2 [ json_name = "glt" ]; }
+
+  // GPS longitude value of the vehicle location in degrees x 10 million.
+  // The value must be multiplied by (10^ -7) to get value in degrees upto 7
+  // decimal places.
+  oneof gpsLongProperty { int32 gpsLong = 3 [ json_name = "gln" ]; }
+
+  // GPS altitude value of the vehicle location in centimeters based on WGS 84
+  // Reference Ellipsoid. The value must be multiplied by (10^ -2) to get value
+  // in meters
+  oneof gpsAltProperty { int32 gpsAlt = 4 [ json_name = "gal" ]; }
+
+  // GPS course angle value of the vehicle direction in degrees (0-North).
+  //
+  oneof gpsCourseAngleProperty {
+    uint32 gpsCourseAngle = 5 [ json_name = "gca" ];
+  }
+
+  // X-axis value from the vehicle accelerometer in meters/sec^2 x 100
+  // The value must be multiplied by (10^ -2) to get value in meters/sec^2 up to
+  // 2 decimal places
+  oneof accelXProperty { int32 accelX = 6 [ json_name = "acx" ]; }
+
+  // Y-axis value from the vehicle accelerometer in meters/sec^2 x 100
+  // The value must be multiplied by (10^ -2) to get value in meters/sec^2 up to
+  // 2 decimal places
+  oneof accelYProperty { int32 accelY = 7 [ json_name = "acy" ]; }
+
+  // Z-axis value from the vehicle accelerometer in meters/sec^2 x 100
+  // The value must be multiplied by (10^ -2) to get value in meters/sec^2 up to
+  // 2 decimal places
+  oneof accelZProperty { int32 accelZ = 8 [ json_name = "acz" ]; }
+
+  // GPS signal quality value in the range 0 to 150.
+  // The signal quality value shall be inferred based on the range below
+  //	< 20 = Very Poor
+  //	> 20 = Poor
+  //	> 30 Medium
+  //	> 40 Good
+  oneof gpsSignalQualityProperty {
+    uint32 gpsSignalQuality = 9 [ json_name = "gsq" ];
+  }
+
+  // Accuracy value for the GPS latitude in meters x 100
+  // The value must be multiplied by (10^ -2) to get value in meters up to 2
+  // decimal places
+  oneof gpsAccuracyLatProperty {
+    uint32 gpsAccuracyLat = 10 [ json_name = "gacLt" ];
+  }
+
+  // Accuracy value for the GPS longitude in meters x 100
+  // The value must be multiplied by (10^ -2) to get value in meters up to 2
+  // decimal places
+  oneof gpsAccuracyLongProperty {
+    uint32 gpsAccuracyLong = 11 [ json_name = "gacLn" ];
+  }
+
+  // Accuracy value for the GPS altitude in meters x 100
+  // The value must be multiplied by (10^ -2) to get value in meters up to 2
+  // decimal places
+  oneof gpsAccuracyAltProperty {
+    uint32 gpsAccuracyAlt = 12 [ json_name = "gacAl" ];
+  }
+
+  // GSM_Signal_Strength
+  oneof gsmSignalStrengthProperty {
+    uint32 gsmSignalStrength = 13 [ json_name = "gsmSig" ];
+  }
+
+  // GSM_MCC
+  oneof gsmMccProperty { uint32 gsmMcc = 14 [ json_name = "gsmMCC" ]; }
+
+  // GSM_MNC
+  oneof gsmMncProperty { uint32 gsmMnc = 15 [ json_name = "gsmMnc" ]; }
+
+  // Ignition status from the vehicle engine
+  oneof ignitionOnProperty { IgnitionOn ignitionOn = 16 [ json_name = "ign" ]; }
+
+  // Crank status from the vehicle engine
+  oneof crankOnProperty { CrankOn crankOn = 17 [ json_name = "cnk" ]; }
+
+  // Vehicle speed value in meters/sec x 100000
+  // The value must be multiplied by (10^ -5) to get value in meters/sec up to 5
+  // decimal places
+  oneof vehicleSpeedProperty { uint32 vehicleSpeed = 18 [ json_name = "vsp" ]; }
+
+  // Engine RPM value
+  oneof engineRpmProperty { uint32 engineRpm = 19 [ json_name = "rpm" ]; }
+
+  // Steering angle value in degrees x 100000
+  // The value must be multiplied by (10^ -5) to get value upto 5 decimal places
+  oneof steeringAngleProperty {
+    uint32 steeringAngle = 20 [ json_name = "sta" ];
+  }
+
+  // Distance travelled value from the vehicle in meters
+  oneof distanceTravelledProperty {
+    uint32 distanceTravelled = 21 [ json_name = "tdt" ];
+  }
+
+  // Outside ambient temperature in centigrades x 10
+  // The value must be multiplied by (10^ -1) to get value upto 1 decimal place
+  oneof outsideAmbientTemperatureProperty {
+    int32 outsideAmbientTemperature = 22 [ json_name = "oat" ];
+  }
+
+  // Vehicle interior temperature in centigrades x 10
+  // The value must be multiplied by (10^ -1) to get value upto 1 decimal place
+  oneof vehicleInteriorTemperatureProperty {
+    int32 vehicleInteriorTemperature = 23 [ json_name = "vit" ];
+  }
+
+  // Steering direction value from the vehicle
+  // When available, a TCU MUST set this property to the steering direction
+  oneof steeringDirectionProperty {
+    SteeringDirection steeringDirection = 24 [ json_name = "sdn" ];
+  }
+
+  // AC compressor pressure in KVA
+  oneof acCompressorPressureProperty {
+    uint32 acCompressorPressure = 25 [ json_name = "acp" ];
+  }
+
+  // Accelerator pedal position in percentage x 10
+  // The value must be multiplied by (10^ -1) to get value upto 1 decimal place
+  oneof acceleratorPedalPositionProperty {
+    uint32 acceleratorPedalPosition = 26 [ json_name = "app" ];
+  }
+
+  // Atmospheric pressure in KVA
+  oneof atmosphericPressureProperty {
+    uint32 atmosphericPressure = 27 [ json_name = "atp" ];
+  }
+
+  // Transmission oil temperature in centigrades
+  oneof transmissionOilTemperatureProperty {
+    int32 transmissionOilTemperature = 28 [ json_name = "tot" ];
+  }
+
+  // EV Gear State
+  oneof evGearInfoProperty {
+    EVGearState evGearInfo = 29 [ json_name = "egi" ];
+  }
+
+  // VCUPowerMode
+  oneof vcuPowerModeProperty {
+    VCUPowerMode vcuPowerMode = 30 [ json_name = "vcupm" ];
+  }
+
+  // Gear_Info
+  oneof gear_InfoProperty { GearState gear_Info = 31 [ json_name = "grinfo" ]; }
+
+  // Fuel
+  oneof fuelRemainingProperty {
+    uint32 fuelRemaining = 32 [ json_name = "fuel" ];
+  }
+
+  // Cumulative fuel consumption rate in litres x 10000
+  // The value must be multiplied by (10^ -4) to get value upto 4 decimal place
+  oneof cumulativeFuelConsumptionRateProperty {
+    uint32 cumulativeFuelConsumptionRate = 33 [ json_name = "cfr" ];
+  }
+
+  // Engine idle RPM target
+  oneof engineIdleSpeedTargetProperty {
+    uint32 engineIdleSpeedTarget = 34 [ json_name = "eis" ];
+  }
+
+  // Engine coolant temperature in centigrades
+  oneof engineCoolantTemperatureProperty {
+    int32 engineCoolantTemperature = 35 [ json_name = "ect" ];
+  }
+
+  // Gyroscope-x
+  oneof gyroscopeXProperty { uint32 gyroscopeX = 36 [ json_name = "gyroX" ]; }
+
+  // Gyroscope-y
+  oneof gyroscopeYProperty { uint32 gyroscopeY = 37 [ json_name = "gyroY" ]; }
+
+  // Gyroscope-z
+  oneof gyroscopeZProperty { uint32 gyroscopeZ = 38 [ json_name = "gyroZ" ]; }
+
+  // BlowerSpeed
+  oneof blowerSpeedProperty {
+    BlowerSpeed blowerSpeed = 39 [ json_name = "blspeed" ];
+  }
+
+  // HvAmpHr
+  oneof hvAmpHrProperty { uint32 hvAmpHr = 40 [ json_name = "hvamp" ]; }
+
+  // HvAmpHrRegen
+  oneof hvAmpHrRegenProperty {
+    uint32 hvAmpHrRegen = 41 [ json_name = "hvampreg" ];
+  }
+
+  // HvBattMaxCellVoltage
+  oneof hvBattMaxCellVoltageProperty {
+    uint32 hvBattMaxCellVoltage = 42 [ json_name = "hbmaxv" ];
+  }
+
+  // HvBattMinCellVoltage
+  oneof hvBattMinCellVoltageProperty {
+    uint32 hvBattMinCellVoltage = 43 [ json_name = "hbminv" ];
+  }
+
+  // HvBattMaxCellTemp
+  oneof hvBattMaxCellTempProperty {
+    uint32 hvBattMaxCellTemp = 44 [ json_name = "hbmaxtmp" ];
+  }
+
+  // HvBattMinCellTemp
+  oneof hvBattMinCellTempProperty {
+    uint32 hvBattMinCellTemp = 45 [ json_name = "hbmintmp" ];
+  }
+
+  // HvBattPackVoltage
+  oneof hvBattPackVoltageProperty {
+    uint32 hvBattPackVoltage = 46 [ json_name = "hbpvol" ];
+  }
+
+  // BrakePressState
+  oneof brkPressStateProperty {
+    BrakePressState brkPressState = 47 [ json_name = "brkprs" ];
+  }
+
+  oneof vehicleSpeedTwoProperty {
+    uint32 vehicleSpeedTwo = 48 [ json_name = "vspd2" ];
+  }
+
+  oneof vehicleDriveModeProperty {
+    VehicleDriveMode vehicleDriveMode = 49 [ json_name = "vdrvmd" ];
+  }
+
+  oneof clutchStateProperty {
+    ClutchState clutchState = 50 [ json_name = "clthst" ];
+  }
+
+  oneof acStateProperty { AcState acState = 51 [ json_name = "acst" ]; }
+
+  // GPsFixStatus Property
+  GPsFixStatus gpsFixStatus = 52 [ json_name = "gpsfixSt" ];
+
+  // PowerModeState Property
+  PowerModeState powerModeState = 53 [ json_name = "pwrmdst" ];
+
+  // HornState Property
+  HornState hornState = 54 [ json_name = "hrnst" ];
+
+  // HighBeamLampOnFlag Property
+  HighBeamLampOnFlag highBeamLampOnFlag = 55 [ json_name = "hblf" ];
+
+  // LowBeamLampOnFlag Property
+  LowBeamLampOnFlag lowBeamLampOnFlag = 56 [ json_name = "lblf" ];
+
+  // LeftFrontDoorOpenFlag Property
+  LeftFrontDoorOpenFlag leftFrontDoorOpenFlag = 57 [ json_name = "lfdof" ];
+
+  // RightFrontDoorOpenFlag Property
+  RightFrontDoorOpenFlag rightFrontDoorOpenFlag = 58 [ json_name = "rfdof" ];
+
+  // LeftRearDoorOpenFlag Property
+  LeftRearDoorOpenFlag leftRearDoorOpenFlag = 59 [ json_name = "lrdof" ];
+
+  // RightRearDoorOpenFlag Property
+  RightRearDoorOpenFlag rightRearDoorOpenFlag = 60 [ json_name = "rrdof" ];
+
+  // TailGateOpenFlag Property
+  TailGateOpenFlag tailGateOpenFlag = 61 [ json_name = "tgof" ];
+
+  // BonnetOpenFlag Property
+  BonnetOpenFlag bonnetOpenFlag = 62 [ json_name = "bntof" ];
+
+  // VehicleARmState Property
+  VehicleARmState vehicleARmState = 63 [ json_name = "varm" ];
+
+  // CabinCoolingSolValveState Property
+  CabinCoolingSolValveState cabinCoolingSolValveState = 64
+      [ json_name = "csol" ];
+
+  // AcReqDrvr Property
+  AcReqDrvr acReqDrvr = 65 [ json_name = "acrq" ];
+
+  // CoolingPwrVCU Property
+  uint32 coolingPwrVCU = 66 [ json_name = "copwvc" ];
+
+  // CoolingPwrFATC Property
+  uint32 coolingPwrFATC = 67 [ json_name = "copwfc" ];
+
+  // HeatingPwrVCU Property
+  uint32 heatingPwrVCU = 68 [ json_name = "htpwvc" ];
+
+  // HeatingPwrFATC Property
+  uint32 heatingPwrFATC = 69 [ json_name = "htpwfc" ];
+
+  // AcCmprSpd Property
+  uint32 acCmprSpd = 70 [ json_name = "htpwfc" ];
+
+  // SolarLoad Property
+  uint32 solarLoad = 71 [ json_name = "slrld" ];
+
+  // AcSetTemperature Property
+  AcSetTemperature acSetTemperature = 72 [ json_name = "acstmp" ];
+
+  // BatteryCoolingSolValveState Property
+  BatteryCoolingSolValveState batteryCoolingSolValveState = 73
+      [ json_name = "battcl" ];
+
+  // BrakePedalPosPercen Property
+  uint32 brakePedalPosPercen = 74 [ json_name = "brkpdl" ];
+
+  // ParkBrakeState Property
+  ParkBrakePressStateFlag parkBrakeState = 75 [ json_name = "prkbrk" ];
+
+  // ElectricMotorTorque Property
+  int32 electricMotorTorque = 76 [ json_name = "prkbrk" ];
+
+  // DriverSeatBeltFlag Property
+  DriverSeatBeltFlag driverSeatBeltFlag = 77 [ json_name = "drvst" ];
+
+  // CoDriverSeatBeltFlag Property
+  CoDriverSeatBeltFlag coDriverSeatBeltFlag = 78 [ json_name = "cdrvst" ];
+
+  // EnerConsumptionDrive Property
+  uint32 enerConsumptionDrive = 79 [ json_name = "enerconsdr" ];
+
+  // EnerConsumptionAux Property
+  uint32 enerConsumptionAux = 80 [ json_name = "enerconsax" ];
+
+  // EnerConsumptionCooling Property
+  uint32 enerConsumptionCooling = 81 [ json_name = "enerconscol" ];
+
+  // RegenPowerConsumption Property
+  uint32 regenPowerConsumption = 82 [ json_name = "rgneff" ];
+
+  // CruiseControlStatus Property
+  CruiseControlStatus cruiseControlStatus = 83 [ json_name = "crsctr" ];
+
+  // CruiseControlSpeed Property
+  uint32 cruiseControlSpeed = 84 [ json_name = "crsctrsp" ];
+
+  // FuelLevelPercentage Property
+  uint32 fuelLevelPercentage = 85 [ json_name = "flperc" ];
+
+  // EngineTorque Property
+  int32 engineTorque = 86 [ json_name = "engtq" ];
+
+  // DRlState Property
+  DRlState drlState = 87 [ json_name = "drlstokok" ];
+
+  // WiperState Property
+  WiperState wiperState = 88 [ json_name = "wprst" ];
+
+  // InstantFE Property
+  uint32 instantFE = 89 [ json_name = "instfe" ];
+
+  // ThrottleBodyPosition Property
+  int32 throttleBodyPosition = 90 [ json_name = "thrpos" ];
+
+  // IntakeManifoldTemp Property
+  uint32 intakeManifoldTemp = 91 [ json_name = "intkmf" ];
+
+  // BiFuelMode Property
+  BiFuelMode biFuelMode = 92 [ json_name = "biflm" ];
+
+  // HvBattSocPercentage Property
+  uint32 hvBattSocPercentage = 93 [ json_name = "hvbsoc" ];
+
+  // Distance to Empty Property
+  uint32 distanceToEmpty = 94 [ json_name = "dstEmpty" ];
+
+  // Distance to Empty Non EV Property
+  uint32 distanceToEmptyNonEV = 95 [ json_name = "dstEmptynv" ];
+
+  // AcMode Property
+  AcMode acMode = 96 [ json_name = "acmd" ];
+
+  // ElectricMotorCurrent Property
+  int32 electricMotorCurrent = 97 [ json_name = "elcmc" ];
+
+  // ElectricMotorVoltage Property
+  int32 electricMotorVoltage = 98 [ json_name = "elcmv" ];
+
+  // ElectricMotorSpeed Property
+  int32 electricMotorSpeed = 99 [ json_name = "elcms" ];
+
+  // ElectricMotorTemperature Property
+  int32 electricMotorTemperature = 100 [ json_name = "elcmv" ];
+
+  // HvBattCurrent Property
+  int32 hvBattCurrent = 101 [ json_name = "elcmc" ];
+
+  // HvBattKWh Property
+  uint32 hvBattKWh = 102 [ json_name = "elcmv" ];
+
+  // DcDcOutputVolatge Property
+  uint32 dcDcOutputVolatge = 103 [ json_name = "dcopvol" ];
+
+  // DcDcOutputCurrent Property
+  uint32 dcDcOutputCurrent = 104 [ json_name = "dcopcur" ];
+
+  // VehicleBatteryLevel Property
+  uint32 vehicleBatteryLevel = 105 [ json_name = "vehbattlev" ];
+}
+
+//

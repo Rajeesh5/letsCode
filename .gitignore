@@ -3,6 +3,8 @@
 !*/
 *.json
 *.o
+*.so
 CMake*
 *.cmake
 *.out
+build/

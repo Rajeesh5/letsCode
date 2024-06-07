@@ -1,0 +1,142 @@
+class IPerson {
+    public:
+    virtual void QuickThinker() = 0;
+    virtual ~IPerson() { std:: cout<< "Deleted Person" << std::endl;}
+};
+
+----------------------------------------------------------------------
+
+class IAnimal {
+    public:
+    virtual void Runner() = 0;
+    virtual ~IAnimal() { std:: cout<< "Deleted Animal" << std::endl;}
+};
+
+----------------------------------------------------------------------
+
+class Lion {
+public:
+    AnimalDB(std::shared_ptr<IAnimal> animal):animal_(animal){}
+private:
+    std::shared_ptr<IAnimal> animal_;
+};
+
+----------------------------------------------------------------------
+
+class SuperHuman : public IPerson, public IAnimal {
+public:
+    virtual void Runner() override;
+    virtual void QuickThinker() override;
+    virtual ~SuperHuman() override { std::cout << "Deleted SuperHuman" << std::endl; }
+private:
+    int iq_power_ = 0;
+    int running_speed_ =0;
+};
+
+
+    void SuperHuman::Runner() {
+        // Init
+        std::cout << "I am quick Runner" << std::endl;
+        Lion jambo(std::static_pointer_cast<IAnimal>(std::shared_ptr<SuperHuman>(this)));
+      
+    }
+    void SuperHuman::QuickThinker() {
+        // HandleEvent
+        std::cout << "I am quick Thinker" << std::endl;
+    }
+
+----------------------------------------------------------------------
+
+int main() {
+
+    std::shared_ptr<SuperHuman> rajeev = std::make_shared<SuperHuman>();
+    rajeev->Runner();
+    return 0;
+
+}
+
+----------------------------------------------------------------------
+
+I am trying to simulate one of my requirement, with easy example, 
+here is the output of my program :: 
+
+I am quick Runner
+Deleted SuperHuman
+Deleted Animal
+Deleted Person
+double free or corruption (out)
+Aborted (core dumped)
+
+How Can I privent it from double free ? 
+
+----------------------------------------------------------------------
+
+
+
+        std::shared_ptr<IAnimal> animalPtr = std::shared_ptr<IAnimal>(this); // Creating shared_ptr of IAnimal
+        Lion jambo(animalPtr);          // Pass the IAnimal shared_ptr to Lion
+        std::shared_ptr<SuperHuman> self_copy(this);
+        std::shared_ptr<IAnimal> animalPtr = std::static_pointer_cast<IAnimal>(self_copy); // Cast to IAnimal  
+        std::shared_ptr<SuperHuman> self_copy = std::make_shared<SuperHuman>(*this);
+        std::shared_ptr<IAnimal> animalPtr = std::static_pointer_cast<IAnimal>(self_copy);
+        Lion jambo(animalPtr
+        std::shared_ptr<IAnimal> animalPtr = std::static_pointer_cast<IAnimal>(std::shared_ptr<SuperHuman>(this));
+        Lion jambo(animalPtr
+                //Lion jambo(std::static_pointer_cast<IAnimal>(std::shared_ptr<SuperHuman>(this)));
+
+        ------------------------------------------------------------------------------------
+
+This works for my example but geeting error with my production code
+Error is ::
+
+terminate called after throwing an instance of 'std::bad_weak_ptr'
+  what():  bad_weak_ptr
+Aborted (core dumped)
+
+Here you can assume ::
+
+DummyPlugin ->  SuperHuman
+PluginInterface -> IAnimal
+EventHandler -> IPerson
+EventAdmin -> Loin
+
+class DummyPlugin : public common::PluginInterface,
+                    public common::EventHandler,
+                    public std::enable_shared_from_this<DummyPlugin> {
+ public:
+  ~DummyPlugin() override {
+    std::cout << "DummyPlugin disctuctor called" << std::endl;
+  }
+  DummyPlugin() = default;
+
+  bool Init() override;
+  void HandleEvent(std::shared_ptr<common::Event> event) override;
+};
+
+
+  bool DummyPlugin::Init() {
+  std::shared_ptr<common::EventAdmin> admin = common::EventAdmin::GetInstance();
+
+  admin->RegisterService(
+      {common::EventConstants::TEST_COMMON_EVENT_TOPIC},
+      std::static_pointer_cast<EventHandler>(shared_from_this()));
+
+  return true;
+}
+
+// Below is the implemetation of EventAdmin::RegisterService()
+void EventAdmin::RegisterService(const std::vector<std::string>& topics,
+                                 std::shared_ptr<EventHandler> handler) {
+  if (handler) {
+    for (const auto& topic : topics) {
+      handlers_[topic].push_back(handler);
+    }
+  }
+}
+
+
+std::shared_ptr<common::PluginInterface> Create() {
+    PluginInterface *plugin = new  DummyPlugin();
+    return std::shared_ptr<common::PluginInterface>(plugin);
+}
+

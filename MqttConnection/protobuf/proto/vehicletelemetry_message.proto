@@ -1,0 +1,27 @@
+syntax = "proto3";
+package com.bosch.itrams_gen2e;
+option optimize_for = LITE_RUNTIME;
+
+import "vehicletelemetry.proto";
+import "common.proto";
+import "google/protobuf/timestamp.proto";
+// import "timestamp.proto";
+
+enum eTcuMessageSubType { Telemetry = 0; }
+
+message TelemetryMessage {
+  string message_id = 1;
+  string to = 2;
+  string correlation_id = 3;
+  string user_id = 4;
+  string vehicle_id = 5;
+  eTcuMessageType type = 6;
+  eTcuMessageSubType subtype = 7;
+  string priority = 8;
+  eOperatingState operating_state = 9;
+  eProvisioningState provisioning_state = 10;
+  string version = 11;
+  google.protobuf.Timestamp time_stamp = 12;
+  TelemetryPayload telemetryPayload = 13;
+  int32 packetType = 14;
+}
