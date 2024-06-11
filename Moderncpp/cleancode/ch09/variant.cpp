@@ -75,6 +75,7 @@ OptionalPesron fetchPersonOptional(const std::string& nm) {
   return {};
 }
 
+
 int main() {
   std::string nameToFetch = "Alice1";
   try {
@@ -96,4 +97,75 @@ int main() {
   }
 
   return 0;
+}
+
+
+#include "Identifier.h"
+#include "Money.h"
+#include <string>
+#include <string_view>
+
+class Employee final {
+public:
+    Employee(std::string_view forename,
+             std::string_view surname,
+             const Identifier& staffNumber,
+             const Money& salary) noexcept :
+        forename { forename },
+        surname { surname },
+        staffNumber { staffNumber },
+        salary { salary } { }
+
+    Identifier getStaffNumber() const noexcept {
+        return staffNumber;
+    }
+
+    Money getSalary() const noexcept {
+        return salary;
+    }
+
+    Employee changeSalary(const Money& newSalary) const noexcept {
+        return Employee(forename, surname, staffNumber, newSalary);
+    }
+
+private:
+    const std::string forename;
+    const std::string surname;
+    const Identifier staffNumber;
+    const Money salary;
+};
+
+
+#include <algorithm>
+#include <cstddef>
+#include <utility>
+
+class Clazz {
+public:
+    explicit Clazz(const std::size_t size) : resourceToManage(size) { }
+
+    // Defaulted copy constructor
+    Clazz(const Clazz& other) = default;
+
+    // Defaulted move constructor
+    Clazz(Clazz&& other) noexcept = default;
+
+    // Defaulted copy assignment operator
+    Clazz& operator=(Clazz other) = default;
+
+    // Destructor
+    ~Clazz() = default;
+
+private:
+    std::vector<char> resourceToManage;
+};
+
+class App {
+    
+public:
+    void doSomething() {
+        logger.log("Doing something...");
+    }
+    private:
+    Logger logger = Logger.getInstance();
 }
