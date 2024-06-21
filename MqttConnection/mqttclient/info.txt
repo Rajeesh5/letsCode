@@ -1,0 +1,20 @@
+there are two separate command-line clients provided by the Mosquitto project for publishing and subscribing to topics: 
+a. mosquitto_pub (for publishing messages to a topic) and 
+b. mosquitto_sub (for subscribing to a topic).
+
+
+Publishing to a Topic with mosquitto_pub
+-----------------------------------------
+To publish a message to a topic, use the mosquitto_pub command. For example, 
+to publish the message "Hello World" to the topic "hello" on port 1884, you would use:
+
+mosquitto_pub -h localhost -p 1884 -t "hello" -m "Hello World"
+
+
+Subscribing to a Topic with mosquitto_sub
+-----------------------------------------
+To subscribe to a topic and receive messages, use the mosquitto_sub command. For example, 
+to subscribe to the topic "hello" on port 1884, you would use:
+
+Note :: before runing mosquitto_pub and mosquitto_sub must run broker
+    mosquitto -p 1884
